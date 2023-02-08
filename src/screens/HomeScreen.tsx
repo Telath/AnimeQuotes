@@ -42,7 +42,6 @@ export const HomeScreen = () => {
     ["animequotes"],
     fetchData
   );
-  console.log("🚀 ~ file: HomeScreen.tsx:42 ~ HomeScreen ~ data", data);
 
   if (isLoading) {
     return (
@@ -71,7 +70,7 @@ export const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.safeContainer}>
       <Text style={styles.title}>Anime Quotes</Text>
-      <Button onPress={() => refetch()} mode="outlined">
+      <Button onPress={() => refetch()} mode="outlined" style={styles.button}>
         Refresh
       </Button>
       <FlatList
@@ -95,6 +94,12 @@ const styles = StyleSheet.create({
   },
   quote: {
     fontStyle: "italic",
+  },
+  button: {
+    marginTop: 10,
+    // width: "fit-content",
+    // backgroundColor: "red",
+    // color: "white",
   },
   card: {
     margin: 20,
