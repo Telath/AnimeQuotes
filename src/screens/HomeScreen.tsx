@@ -8,7 +8,7 @@ import {
   View,
   FlatList,
 } from "react-native";
-import { Avatar, Card } from "react-native-paper";
+import { Avatar, Button, Card } from "react-native-paper";
 import { fetchData } from "../hooks/useAnimeQuotes";
 
 type ItemData = {
@@ -38,7 +38,11 @@ const Item = ({ anime, character, quote }: ItemData) => {
 };
 
 export const HomeScreen = () => {
-  const { isLoading, isError, data } = useQuery(["animequotes"], fetchData);
+  const { isLoading, isError, data, refetch } = useQuery(
+    ["animequotes"],
+    fetchData
+  );
+  console.log("🚀 ~ file: HomeScreen.tsx:42 ~ HomeScreen ~ data", data);
 
   if (isLoading) {
     return (
@@ -67,6 +71,9 @@ export const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.safeContainer}>
       <Text style={styles.title}>Anime Quotes</Text>
+      <Button onPress={() => refetch()} mode="outlined">
+        Refresh
+      </Button>
       <FlatList
         data={data}
         renderItem={({ item }) => (
