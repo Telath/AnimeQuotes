@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import {
   SafeAreaView,
@@ -8,7 +9,7 @@ import {
   FlatList,
 } from "react-native";
 import { Avatar, Card } from "react-native-paper";
-
+import { fetchData } from "../hooks/useAnimeQuotes";
 import { default as data } from "../../api/data.json";
 
 type ItemData = {
@@ -23,8 +24,13 @@ const LeftContent = (props: object) => (
 
 const Item = ({ anime, character, quote }: ItemData) => {
   return (
-    <Card>
-      <Card.Title title={anime} subtitle={character} left={LeftContent} />
+    <Card style={styles.card}>
+      <Card.Title
+        title={anime}
+        subtitle={character}
+        left={LeftContent}
+        titleStyle={{ fontWeight: "700" }}
+      />
       <Card.Content>
         <Text style={styles.quote}>"{quote}"</Text>
       </Card.Content>
@@ -33,6 +39,34 @@ const Item = ({ anime, character, quote }: ItemData) => {
 };
 
 export const HomeScreen = () => {
+  const { isLoading, isError, data } = useQuery(["animequotes"], fetchData);
+
+  console.log(data);
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>Loading…</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View>
+        <Text>Error...</Text>
+      </View>
+    );
+  }
+
+  if (data === undefined) {
+    return (
+      <View>
+        <Text>Not found.</Text>
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.safeContainer}>
       <FlatList
@@ -56,6 +90,9 @@ const styles = StyleSheet.create({
   },
   quote: {
     fontStyle: "italic",
+  },
+  card: {
+    margin: 20,
   },
   container: {
     paddingHorizontal: 20,
