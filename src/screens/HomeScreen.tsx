@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { Avatar, Card } from "react-native-paper";
 import { fetchData } from "../hooks/useAnimeQuotes";
-import { default as data } from "../../api/data.json";
 
 type ItemData = {
   anime: string;
@@ -41,34 +40,33 @@ const Item = ({ anime, character, quote }: ItemData) => {
 export const HomeScreen = () => {
   const { isLoading, isError, data } = useQuery(["animequotes"], fetchData);
 
-  console.log(data);
-
   if (isLoading) {
     return (
-      <View>
-        <Text>Loading…</Text>
-      </View>
+      <SafeAreaView style={styles.status}>
+        <Text style={styles.statusText}>🕓 Loading 🕓</Text>
+      </SafeAreaView>
     );
   }
 
   if (isError) {
     return (
-      <View>
-        <Text>Error...</Text>
-      </View>
+      <SafeAreaView style={styles.status}>
+        <Text>🛑 Error 🛑</Text>
+      </SafeAreaView>
     );
   }
 
   if (data === undefined) {
     return (
-      <View>
-        <Text>Not found.</Text>
-      </View>
+      <SafeAreaView style={styles.status}>
+        <Text>🥹 Not found 🥹</Text>
+      </SafeAreaView>
     );
   }
 
   return (
     <SafeAreaView style={styles.safeContainer}>
+      <Text style={styles.title}>Anime Quotes</Text>
       <FlatList
         data={data}
         renderItem={({ item }) => (
@@ -98,13 +96,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 20,
   },
-  item: {
-    backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
   anime: {
     fontSize: 32,
+  },
+  title: {
+    fontSize: 32,
+    textAlign: "center",
+    paddingBottom: 5,
+    borderBottomWidth: 1,
+    borderColor: "#D6D6D6",
+  },
+  status: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  statusText: {
+    fontSize: 20,
+    fontWeight: "500",
   },
 });
