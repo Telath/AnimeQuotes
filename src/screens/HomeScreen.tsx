@@ -8,8 +8,10 @@ import {
   View,
   FlatList,
 } from "react-native";
-import { Avatar, Button, Card } from "react-native-paper";
+import { Appbar, Avatar, Button, Card } from "react-native-paper";
 import { fetchData } from "../hooks/useAnimeQuotes";
+import { Routes } from "../navigation/Routes";
+import { useNavigation } from "@react-navigation/native";
 
 type ItemData = {
   anime: string;
@@ -38,6 +40,12 @@ const Item = ({ anime, character, quote }: ItemData) => {
 };
 
 export const HomeScreen = () => {
+  const navigation = useNavigation<any>();
+
+  function navigateToCredit() {
+    navigation.navigate(Routes.CREDIT_SCREEN);
+  }
+
   const { isLoading, isError, data, refetch } = useQuery(
     ["animequotes"],
     fetchData
@@ -70,9 +78,18 @@ export const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.safeContainer}>
       <Text style={styles.title}>Anime Quotes</Text>
-      <Button onPress={() => refetch()} mode="outlined" style={styles.button}>
-        Refresh
-      </Button>
+      <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+        <Button
+          onPress={navigateToCredit}
+          mode="outlined"
+          style={styles.button}
+        >
+          Crédit
+        </Button>
+        <Button onPress={() => refetch()} mode="outlined" style={styles.button}>
+          Refresh
+        </Button>
+      </View>
       <FlatList
         data={data}
         renderItem={({ item }) => (
