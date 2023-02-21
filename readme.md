@@ -16,7 +16,7 @@ Features:
 
 Preview :
 
-<img src="https://github.com/MarieCamillePetit/Studio_Ghiblou/blob/master/assets/apercu.gif" width="230">
+<img src="./assets/img/demo-animequotes.gif" width="230">
 
 ## Getting Started
 
